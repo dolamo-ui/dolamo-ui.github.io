@@ -1,31 +1,386 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nyakallo Dolamo | Mobile & Web Developer</title>
-  <style>
-    body { font-family: system-ui, sans-serif; background: #0f172a; color: #e2e8f0;
-           max-width: 640px; margin: 0 auto; padding: 4rem 1.5rem; line-height: 1.6; }
-    h1 { color: #fff; margin-bottom: .25rem; }
-    .sub { color: #94a3b8; margin-top: 0; }
-    .card { background: #1e293b; border-radius: 12px; padding: 1.25rem; margin-top: 1.5rem; }
-    a { color: #38bdf8; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skillsmith: Learn, build and certify tech skills</title>
+<meta name="description" content="Skillsmith is an offline-first tech learning app for Android. Learn to code, study cybersecurity, networking, AI and data science, and sit timed certification exams.">
+<meta name="theme-color" content="#05080b">
+<link rel="icon" type="image/png" href="assets/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#05080b; --deep:#0a1511; --panel:#0e1a17; --line:rgba(160,255,215,.10);
+  --green:#22b573; --mint:#6ff0b8; --gold:#f5c242; --text:#e9f2ee; --mute:#8ea79d;
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"Manrope","Segoe UI",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--text);font:400 1.0625rem/1.65 var(--body);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:8px}
+.wrap{width:min(1180px,100% - 2.5rem);margin-inline:auto}
+
+/* nav */
+.nav{position:fixed;inset:0 0 auto 0;z-index:50;transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
+.nav.solid{background:rgba(5,8,11,.82);backdrop-filter:blur(14px);border-color:var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:72px}
+.brand{display:flex;align-items:center;gap:.7rem;font:700 1.25rem var(--display)}
+.brand img{width:36px;height:36px;border-radius:10px}
+.links{display:flex;align-items:center;gap:2rem;font-size:.95rem;color:var(--mute)}
+.links a:hover{color:var(--text)}
+.btn{display:inline-flex;align-items:center;gap:.6rem;padding:.85rem 1.5rem;border-radius:999px;font:600 .98rem var(--body);transition:transform .2s,box-shadow .2s,background .2s}
+.btn.main{background:linear-gradient(135deg,var(--green),#1c9a62);color:#04130c;box-shadow:0 10px 30px -10px rgba(34,181,115,.7)}
+.btn.main:hover{transform:translateY(-2px);box-shadow:0 16px 36px -10px rgba(34,181,115,.9)}
+.btn.ghost{border:1px solid var(--line);color:var(--text);background:rgba(255,255,255,.03)}
+.btn.ghost:hover{background:rgba(255,255,255,.08)}
+.btn.sm{padding:.6rem 1.15rem;font-size:.9rem}
+.btn svg{width:18px;height:18px}
+
+/* hero */
+.hero{position:relative;min-height:100svh;display:flex;align-items:center;padding:7.5rem 0 4rem;overflow:hidden;
+  background:radial-gradient(900px 520px at 78% 40%,rgba(34,181,115,.16),transparent 70%),radial-gradient(600px 400px at 8% 90%,rgba(245,194,66,.07),transparent 70%)}
+#gl{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hero .wrap{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:3rem;align-items:center}
+h1{font:800 clamp(2.9rem,6.6vw,5.6rem)/.98 var(--display);letter-spacing:-.035em;max-width:11ch}
+.lede{margin-top:1.6rem;max-width:34rem;color:var(--mute);font-size:1.18rem}
+.cta{margin-top:2.2rem;display:flex;flex-wrap:wrap;gap:.9rem}
+.proof{margin-top:2.6rem;display:flex;gap:2.4rem;flex-wrap:wrap}
+.proof b{display:block;font:800 2rem/1 var(--display);color:var(--gold)}
+.proof span{font-size:.88rem;color:var(--mute)}
+.stage{position:relative;height:640px;perspective:1200px}
+.phone{position:absolute;width:260px;mix-blend-mode:screen;filter:drop-shadow(0 30px 40px rgba(0,0,0,.6));will-change:transform}
+.phone.a{left:50%;top:0;margin-left:-130px;width:290px;z-index:3}
+.phone.b{left:0;top:70px;z-index:2;opacity:.9}
+.phone.c{right:0;top:90px;z-index:1;opacity:.85}
+.hero-in{opacity:0;transform:translateY(26px);animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards}
+.hero-in:nth-child(2){animation-delay:.12s}.hero-in:nth-child(3){animation-delay:.24s}.hero-in:nth-child(4){animation-delay:.36s}
+.stage.hero-in{animation-delay:.3s}
+@keyframes rise{to{opacity:1;transform:none}}
+
+/* tracks strip */
+.strip{border-block:1px solid var(--line);background:var(--deep);overflow:hidden;padding:1.1rem 0}
+.run{display:flex;gap:3rem;width:max-content;animation:run 38s linear infinite;font:600 1.15rem var(--display);color:var(--mute)}
+.run span{display:flex;align-items:center;gap:3rem}
+.run span::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--gold)}
+@keyframes run{to{transform:translateX(-50%)}}
+
+/* sections */
+section{padding:7rem 0}
+h2{font:800 clamp(2rem,4.2vw,3.4rem)/1.05 var(--display);letter-spacing:-.03em;max-width:18ch}
+.sub{margin-top:1rem;color:var(--mute);max-width:36rem}
+
+/* bento */
+.bento{margin-top:3.2rem;display:grid;grid-template-columns:repeat(6,1fr);gap:1.1rem}
+.tile{position:relative;overflow:hidden;padding:1.9rem;border:1px solid var(--line);background:linear-gradient(160deg,var(--panel),#09100e)}
+.tile h3{font:700 1.5rem/1.15 var(--display);letter-spacing:-.02em}
+.tile p{margin-top:.7rem;color:var(--mute);font-size:1rem}
+.t1{grid-column:span 4;min-height:300px;border-radius:34px 34px 34px 8px}
+.t2{grid-column:span 2;border-radius:8px 34px 34px 34px}
+.t3{grid-column:span 2;border-radius:34px 8px 34px 34px}
+.t4{grid-column:span 2;border-radius:20px}
+.t5{grid-column:span 2;border-radius:34px 34px 8px 34px}
+.t1 .chips{margin-top:1.4rem;display:flex;flex-wrap:wrap;gap:.55rem;max-width:30rem}
+.chip{padding:.4rem .85rem;border-radius:999px;border:1px solid var(--line);font:600 .85rem var(--body);background:rgba(255,255,255,.03)}
+.chip.js{color:#f5c242}.chip.ts{color:#4aa8ff}.chip.py{color:#41d6c3}.chip.jv{color:#ff9d4a}.chip.cs{color:#b78bff}.chip.x{color:var(--mint)}
+.t1 .glow{position:absolute;right:-60px;bottom:-80px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(34,181,115,.35),transparent 70%)}
+.ico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;margin-bottom:1.1rem;background:rgba(34,181,115,.14);color:var(--mint)}
+.ico.g{background:rgba(245,194,66,.14);color:var(--gold)}
+.ico svg{width:24px;height:24px}
+
+/* showcase */
+.show{background:linear-gradient(180deg,var(--ink),var(--deep) 30%,var(--ink))}
+.row{margin-top:3.4rem;display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;align-items:start}
+.shot{text-align:center}
+.shot img{width:min(270px,100%);margin:0 auto;mix-blend-mode:screen;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.shot:hover img{transform:translateY(-10px) scale(1.02)}
+.shot:nth-child(2){margin-top:3rem}
+.shot h3{margin-top:1.2rem;font:700 1.25rem var(--display)}
+.shot p{color:var(--mute);font-size:.98rem;max-width:20rem;margin:.4rem auto 0}
+.rise{opacity:0;transform:translateY(40px);transition:opacity .9s,transform .9s cubic-bezier(.2,.7,.2,1)}
+.rise.in{opacity:1;transform:none}
+.shot:nth-child(2).rise{transition-delay:.12s}.shot:nth-child(3).rise{transition-delay:.24s}
+
+/* privacy band */
+.band{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;border:1px solid var(--line);border-radius:40px;padding:3.2rem;background:radial-gradient(500px 300px at 100% 0,rgba(245,194,66,.10),transparent 70%),var(--panel)}
+.list{display:grid;gap:1.1rem;list-style:none}
+.list li{display:flex;gap:.9rem;color:var(--mute)}
+.list li b{color:var(--text);display:block;font-weight:600}
+.list svg{flex:none;width:22px;height:22px;margin-top:3px;color:var(--gold)}
+
+/* final cta */
+.final{text-align:center}
+.final h2{margin:0 auto;max-width:16ch}
+.final .sub{margin:1.1rem auto 0}
+.final .cta{justify-content:center}
+.final img.logo{width:84px;height:84px;margin:0 auto 1.6rem;border-radius:24px;box-shadow:0 0 70px rgba(34,181,115,.45)}
+
+footer{border-top:1px solid var(--line);padding:2.2rem 0;color:var(--mute);font-size:.92rem}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+footer a:hover{color:var(--text)}
+.fl{display:flex;gap:1.6rem;flex-wrap:wrap}
+
+@media (max-width:960px){
+  .hero .wrap{grid-template-columns:1fr}
+  .stage{height:520px;margin-top:1rem}
+  .phone{width:210px}.phone.a{width:240px;margin-left:-120px}
+  .links a:not(.btn){display:none}
+  .bento{grid-template-columns:repeat(2,1fr)}
+  .t1,.t2,.t3,.t4,.t5{grid-column:span 2}
+  .row{grid-template-columns:1fr;gap:3.2rem}.shot:nth-child(2){margin-top:0}
+  .band{grid-template-columns:1fr;padding:2rem;border-radius:30px}
+  section{padding:5rem 0}
+}
+@media (max-width:520px){.phone.b,.phone.c{display:none}.phone.a{margin-left:-110px;width:220px}.stage{height:480px}}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .hero-in,.rise{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+}
+</style>
 </head>
 <body>
-  <h1>Nyakallo Dolamo</h1>
-  <p class="sub">Full-stack & mobile developer · South Africa</p>
 
-  <div class="card">
-    <h2>Skillsmith</h2>
-    <p>Learn · Build · Certify. An offline-first tech learning app for Android and iOS.</p>
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Skillsmith home"><img src="assets/icon.png" alt="" width="36" height="36">Skillsmith</a>
+    <nav class="links" aria-label="Main">
+      <a href="#features">Features</a>
+      <a href="#screens">Screens</a>
+      <a href="#privacy">Privacy</a>
+      <a class="btn main sm" href="https://play.google.com/store/apps/details?id=com.nyakallodolamo.skillsmith&amp;hl=en_ZA" rel="noopener">Get the app</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" style="padding-top:7.5rem">
+    <canvas id="gl" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <div>
+        <h1 class="hero-in">Master the craft of technology.</h1>
+        <p class="lede hero-in">Short, real-world lessons in coding, cybersecurity, networking, AI and data science. Practise in a built-in code playground, then prove it with a timed exam.</p>
+        <div class="cta hero-in">
+          <a class="btn main" href="https://play.google.com/store/apps/details?id=com.nyakallodolamo.skillsmith&amp;hl=en_ZA" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.6 2.2c-.3.3-.5.8-.5 1.4v16.8c0 .6.2 1.1.5 1.4l9.4-9.8L3.6 2.2zm10.1 10.6 2.6 2.7-10.8 6.1 8.2-8.8zm0-1.6L5.5 2.4l10.8 6.1-2.6 2.7zm3.7 2.2 2.9-1.6c.8-.5.8-1.3 0-1.8l-3-1.7-2.8 2.9 2.9 2.2z"/></svg>
+            Get it on Google Play
+          </a>
+          <a class="btn ghost" href="#features">See what's inside</a>
+        </div>
+        <div class="proof hero-in">
+          <div><b data-count="300" data-suffix="+">300+</b><span>coding lessons</span></div>
+          <div><b data-count="8">8</b><span>timed exams</span></div>
+          <div><b>Offline</b><span>no account needed</span></div>
+        </div>
+      </div>
+      <div class="stage hero-in" id="stage">
+        <img class="phone b" src="assets/code.png" alt="Skillsmith language list showing JavaScript, TypeScript, Python, Java and C#" data-depth="14">
+        <img class="phone c" src="assets/exams.png" alt="Skillsmith examination centre with Cybersecurity, Networking and AI exams" data-depth="22">
+        <img class="phone a" src="assets/home.png" alt="Skillsmith home screen with level, XP and a resume button" data-depth="34">
+      </div>
+    </div>
+  </section>
+
+  <div class="strip" aria-label="Topics covered">
+    <div class="run" id="run">
+      <span>JavaScript</span><span>TypeScript</span><span>Python</span><span>Java</span><span>C#</span><span>SQL</span><span>MySQL</span><span>PHP</span><span>Bash</span><span>Git &amp; GitHub</span><span>Cybersecurity</span><span>Networking</span><span>Artificial Intelligence</span><span>Data Science</span>
+    </div>
   </div>
 
-  <div class="card">
-    <h2>Contact</h2>
-    <p>Email: <a href="mailto:YOUR_SUPPORT_EMAIL">YOUR_SUPPORT_EMAIL</a><br>
-    GitHub: <a href="https://github.com/dolamo-ui">github.com/dolamo-ui</a></p>
+  <section id="features">
+    <div class="wrap">
+      <h2>Everything you need to go from beginner to certified.</h2>
+      <p class="sub">One app for lessons, practice and proof of skill, built so you can keep learning anywhere.</p>
+      <div class="bento">
+        <article class="tile t1">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></svg></div>
+          <h3>Learn to code, one lesson at a time</h3>
+          <p>Follow guided tracks from your first line of code to real projects. Every lesson earns XP and keeps your streak alive.</p>
+          <div class="chips"><span class="chip js">JavaScript</span><span class="chip ts">TypeScript</span><span class="chip py">Python</span><span class="chip jv">Java</span><span class="chip cs">C#</span><span class="chip x">SQL</span><span class="chip x">PHP</span><span class="chip x">Bash</span><span class="chip x">Git &amp; GitHub</span></div>
+          <div class="glow"></div>
+        </article>
+        <article class="tile t2">
+          <div class="ico g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 3 14 9-14 9V3Z"/></svg></div>
+          <h3>Run code in the playground</h3>
+          <p>Write and run JavaScript, TypeScript, Python, Java, C# and C++ without leaving the app.</p>
+        </article>
+        <article class="tile t3">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.4 8.7 8 11 4.6-2.3 8-6 8-11V5l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg></div>
+          <h3>Cybersecurity, networking, AI and data science</h3>
+          <p>Full courses with module quizzes, written in plain language.</p>
+        </article>
+        <article class="tile t4">
+          <div class="ico g"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="m8.5 14 -1.5 8 5-3 5 3-1.500-8"/></svg></div>
+          <h3>Timed certification exams</h3>
+          <p>Closed-book exams with a 70% pass mark. Answers are revealed only after you submit.</p>
+        </article>
+        <article class="tile t5">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c3 4 6 6 6 10a6 6 0 0 1-12 0c0-2 1-3 2-4 .5 1.500 1.500 2 2 2 0-3-1-5 2-8Z"/></svg></div>
+          <h3>Levels, XP and streaks</h3>
+          <p>Climb from Apprentice to Artisan and see your daily goal at a glance.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="show" id="screens">
+    <div class="wrap">
+      <h2>Built for focus, designed for small screens.</h2>
+      <p class="sub">A clean dark interface that keeps your next step one tap away.</p>
+      <div class="row">
+        <figure class="shot rise"><img src="assets/module.png" alt="TypeScript module with a list of lessons and an Up next marker" loading="lazy"><h3>Pick up where you stopped</h3><p>Every module shows your progress and the next lesson to take.</p></figure>
+        <figure class="shot rise"><img src="assets/quiz.png" alt="A timed cybersecurity exam question about the CIA triad" loading="lazy"><h3>Exam mode that feels real</h3><p>A countdown timer, flagged questions and a review screen before you submit.</p></figure>
+        <figure class="shot rise"><img src="assets/code.png" alt="Language tracks with lesson counts and XP" loading="lazy"><h3>Choose your language</h3><p>Each track shows how many lessons you have finished and the XP still to earn.</p></figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="privacy">
+    <div class="wrap">
+      <div class="band">
+        <div>
+          <h2>Your progress stays on your phone.</h2>
+          <p class="sub">Skillsmith works offline and does not ask you to create an account, so you can start learning right away.</p>
+        </div>
+        <ul class="list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg><span><b>No sign-up</b>Open the app and begin.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg><span><b>Offline-first</b>Lessons and quizzes work without a connection.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg><span><b>Made in South Africa</b>Security lessons include POPIA and the Cybercrimes Act.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="final">
+    <div class="wrap">
+      <img class="logo" src="assets/icon.png" alt="Skillsmith app icon" loading="lazy">
+      <h2>Start your next skill today.</h2>
+      <p class="sub">Download Skillsmith and finish your first lesson in minutes.</p>
+      <div class="cta">
+        <a class="btn main" href="https://play.google.com/store/apps/details?id=com.nyakallodolamo.skillsmith&amp;hl=en_ZA" rel="noopener">Get it on Google Play</a>
+        <a class="btn ghost" href="mailto:dolamonyakallo07@gmail.com">Email support</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>&copy; <span id="yr">2026</span> Skillsmith by Nyakallo Dolamo, South Africa</span>
+    <div class="fl">
+      <a href="mailto:dolamonyakallo07@gmail.com">dolamonyakallo07@gmail.com</a>
+      <a href="https://github.com/dolamo-ui" rel="noopener">GitHub</a>
+      <a href="https://play.google.com/store/apps/details?id=com.nyakallodolamo.skillsmith&amp;hl=en_ZA" rel="noopener">Google Play</a>
+    </div>
   </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // nav background on scroll
+  var nav = document.getElementById('nav');
+  function onScroll(){ nav.classList.toggle('solid', scrollY > 20); }
+  addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+  // duplicate the topic strip so the loop is seamless
+  var run = document.getElementById('run');
+  run.innerHTML += run.innerHTML;
+
+  // one scroll reveal: the showcase phones rise in
+  var rise = document.querySelectorAll('.rise');
+  if('IntersectionObserver' in window && !reduce){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, {threshold:.2});
+    rise.forEach(function(el){ io.observe(el); });
+  } else { rise.forEach(function(el){ el.classList.add('in'); }); }
+
+  // hero phones: depth parallax following the pointer
+  var stage = document.getElementById('stage'), phones = stage.querySelectorAll('.phone');
+  var mx = 0, my = 0, cx = 0, cy = 0;
+  if(!reduce && matchMedia('(pointer:fine)').matches){
+    addEventListener('mousemove', function(e){
+      mx = (e.clientX / innerWidth - .5) * 2;
+      my = (e.clientY / innerHeight - .5) * 2;
+    });
+  }
+  function floatPhones(t){
+    cx += (mx - cx) * .06; cy += (my - cy) * .06;
+    phones.forEach(function(p, i){
+      var d = +p.dataset.depth, bob = reduce ? 0 : Math.sin(t / 1400 + i * 1.6) * 8;
+      p.style.transform = 'translate3d(' + (cx * d) + 'px,' + (cy * d * .6 + bob) + 'px,0) rotateY(' + (cx * 6) + 'deg) rotateX(' + (-cy * 4) + 'deg)';
+    });
+  }
+
+  // Three.js hero scene
+  var cv = document.getElementById('gl'), ready = window.THREE && cv, R, S, C, group, shapes = [], pts, visible = true;
+  if(ready){
+    try{
+      R = new THREE.WebGLRenderer({canvas:cv, alpha:true, antialias:true});
+      R.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+      S = new THREE.Scene();
+      C = new THREE.PerspectiveCamera(50, 1, .1, 100); C.position.z = 10;
+      group = new THREE.Group(); S.add(group);
+      var wire = function(geo, col, op){ return new THREE.Mesh(geo, new THREE.MeshBasicMaterial({color:col, wireframe:true, transparent:true, opacity:op})); };
+      var m1 = wire(new THREE.IcosahedronGeometry(2.4, 1), 0x22b573, .30); m1.position.set(4.6, .2, -3);
+      var m2 = wire(new THREE.OctahedronGeometry(1.1, 0), 0xf5c242, .55); m2.position.set(-5.2, 2.4, -2);
+      var m3 = wire(new THREE.TorusGeometry(1.4, .025, 8, 80), 0x6ff0b8, .55); m3.position.set(-3.2, -2.8, -1);
+      var m4 = wire(new THREE.TetrahedronGeometry(.9, 0), 0xf5c242, .45); m4.position.set(6.2, -3, -1);
+      shapes = [m1, m2, m3, m4]; shapes.forEach(function(s){ group.add(s); });
+      var n = 420, pos = new Float32Array(n * 3);
+      for(var i = 0; i < n; i++){ pos[i*3] = (Math.random() - .5) * 26; pos[i*3+1] = (Math.random() - .5) * 15; pos[i*3+2] = (Math.random() - .5) * 12 - 3; }
+      var pg = new THREE.BufferGeometry(); pg.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      pts = new THREE.Points(pg, new THREE.PointsMaterial({color:0x7ef0bd, size:.045, transparent:true, opacity:.7}));
+      S.add(pts);
+    }catch(err){ ready = false; }
+  }
+  function size(){
+    if(!ready) return;
+    var h = cv.parentElement; R.setSize(h.clientWidth, h.clientHeight, false);
+    C.aspect = h.clientWidth / h.clientHeight; C.updateProjectionMatrix();
+    shapes[0].position.x = innerWidth < 960 ? 2.6 : 4.6;
+  }
+  addEventListener('resize', size); size();
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){ visible = es[0].isIntersecting; }).observe(document.querySelector('.hero'));
+  }
+  function frame(t){
+    requestAnimationFrame(frame);
+    if(!visible) return;
+    floatPhones(t);
+    if(!ready) return;
+    var s = t / 1000;
+    shapes[0].rotation.x = s * .12; shapes[0].rotation.y = s * .18;
+    shapes[1].rotation.x = s * .5;  shapes[1].rotation.y = s * .35;
+    shapes[2].rotation.x = s * .3;  shapes[2].rotation.z = s * .4;
+    shapes[3].rotation.y = s * .6;  shapes[3].rotation.x = s * .25;
+    pts.rotation.y = s * .02;
+    group.position.x += (cx * .5 - group.position.x) * .05;
+    group.position.y += (-cy * .35 - group.position.y) * .05;
+    R.render(S, C);
+  }
+  if(reduce){ floatPhones(0); if(ready) R.render(S, C); } else { requestAnimationFrame(frame); }
+
+  // count-up on the hero numbers
+  if(!reduce){
+    document.querySelectorAll('[data-count]').forEach(function(el){
+      var end = +el.dataset.count, suf = el.dataset.suffix || '', t0 = null;
+      (function step(ts){
+        if(!t0) t0 = ts; var p = Math.min((ts - t0) / 1400, 1);
+        el.textContent = Math.round(end * (1 - Math.pow(1 - p, 3))) + suf;
+        if(p < 1) requestAnimationFrame(step);
+      })(performance.now());
+    });
+  }
+})();
+</script>
 </body>
 </html>
